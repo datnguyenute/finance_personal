@@ -15,11 +15,22 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [
+  {
+    url: "/report",
+    name: "Report"
+  },
+  {
+    url: "/account",
+    name: "Account"
+  },
+];
 const settings = ['Profile', 'Logout'];
 
 function AppHeader() {
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -38,27 +49,31 @@ function AppHeader() {
     setAnchorElUser(null);
   };
 
+  const redirectToHomepage = () => {
+    router.push('/');
+  }
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "#263645" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AssuredWorkloadIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AssuredWorkloadIcon sx={{ display: { xs: 'none', md: 'flex', cursor: "pointer" }, mr: 1 }} onClick={() => redirectToHomepage()} />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor: "pointer"
             }}
+            onClick={() => redirectToHomepage()}
           >
-            PERSONAL FINANCE
+            FINANCE
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -89,8 +104,8 @@ function AppHeader() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Link href={page.url} style={{ color: "unset", textDecoration: "unset" }}>{page.name}</Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -112,17 +127,11 @@ function AppHeader() {
               textDecoration: 'none',
             }}
           >
-            PERSONAL FINANCE
+            FINANCE
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, "> a": { color: "white", display: "block", margin: "0 16px", textDecoration: "unset" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link key={page.name} href={page.url}>{page.name}</Link>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -149,7 +158,7 @@ function AppHeader() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link href={"/profile"}>{setting}</Link>
+                  <Link style={{ color: "unset", textDecoration: "unset" }} href={"/profile"}>{setting}</Link>
                 </MenuItem>
               ))}
             </Menu>

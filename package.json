@@ -16,9 +16,14 @@
     "@mui/icons-material": "^6.1.2",
     "@mui/material": "^6.1.2",
     "@mui/material-nextjs": "latest",
+    "@mui/styled-engine-sc": "^6.1.2",
+    "@mui/x-charts": "^7.19.0",
+    "@mui/x-date-pickers": "^7.19.0",
+    "dayjs": "^1.11.13",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@types/node": "latest",

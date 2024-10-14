@@ -23,8 +23,8 @@ const pages = [
     name: "Report"
   },
   {
-    url: "/account",
-    name: "Account"
+    url: "/transactions",
+    name: "Transactions"
   },
 ];
 const settings = ['Profile', 'Logout'];

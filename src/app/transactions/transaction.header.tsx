@@ -5,16 +5,18 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Fab,
   IconButton,
   Typography,
 } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 import Grid from "@mui/material/Grid2";
 import { GridMoreVertIcon } from "@mui/x-data-grid";
 
 const AccountCard = () => {
   return (
-    <Card sx={{ m: 1, width: 220, display: "inline-block" }}>
+    <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -24,7 +26,7 @@ const AccountCard = () => {
         title="Account 1"
       />
       <CardContent>
-        <Typography sx={{ color: "text.secondary", mb: 1.5 }}>35$</Typography>
+        <Typography sx={{ color: "text.secondary" }} variant="h4">35$</Typography>
       </CardContent>
     </Card>
   );
@@ -35,17 +37,10 @@ const TransactionHeader = () => {
     <Grid container spacing={4}>
       <Grid size={4}>
         <Card sx={{ mb: 2, mt: 2 }}>
+          <CardHeader title={"Total assets"} subheader={"Infomation of your account"} />
           <CardContent>
-            <Typography variant="h5" component="div">
-              Total assets
-            </Typography>
-            <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-              Infomation of your account
-            </Typography>
-            <Typography variant="body2">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
+            <Typography variant="h4">
+              45$
             </Typography>
           </CardContent>
           <CardActions>
@@ -55,17 +50,11 @@ const TransactionHeader = () => {
       </Grid>
       <Grid size={8}>
         <Card sx={{ mb: 2, mt: 2 }}>
+          <CardHeader title={"Accounts"} subheader={"All your accounts"} action={<Fab color="primary" aria-label="add">
+            <AddIcon />
+          </Fab>} />
           <CardContent>
-            <Typography variant="h5" component="div">
-              Accounts
-            </Typography>
-            <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-              All your accounts
-            </Typography>
             <Grid display={"block"}>
-              <AccountCard />
-              <AccountCard />
-              <AccountCard />
               <AccountCard />
               <AccountCard />
               <AccountCard />
@@ -73,7 +62,8 @@ const TransactionHeader = () => {
               <AccountCard />
             </Grid>
           </CardContent>
-          <CardActions></CardActions>
+          <CardActions>
+          </CardActions>
         </Card>
       </Grid>
     </Grid>

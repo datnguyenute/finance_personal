@@ -1,6 +1,6 @@
 "use client";
 import TransactionModal from "@/components/modals/transaction.modal";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
 import { useState } from "react";
@@ -18,7 +18,7 @@ const AccountPage = () => {
       <Container fixed>
         <Box sx={{ height: "calc(100vh - 64px)", pt: 2 }}>
           <TransactionHeader />
-          <TransactionCard />
+          <Divider sx={{marginY: 2}} />
           <Grid
             display={"flex"}
             flexDirection={"row"}

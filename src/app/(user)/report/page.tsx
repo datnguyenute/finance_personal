@@ -1,6 +1,10 @@
+
 const ReportPage = () => {
   return (
-    <div>Report page</div>
+    <>
+      <div>Report page</div>
+    </>
+
   )
 }
 

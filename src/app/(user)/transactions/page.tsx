@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid2";
 
 import { useState } from "react";
 import TransactionHeader from "./transaction.header";
-import TransactionCard from "@/components/grid/transaction.card";
 import TransactionGrid from "@/components/grid/transaction.grid";
 
 const AccountPage = () => {

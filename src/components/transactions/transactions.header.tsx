@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useEffect, useState } from "react";
 import TransactionsAssetsCard from "./assets.card";
+import TransactionsAccountModal from "./account.modal";
 
 interface IPropsAccountCard {
   data: IAccount
@@ -43,6 +44,7 @@ const AccountCard = (props: IPropsAccountCard) => {
 const TransactionsHeader = () => {
   const { data: session } = useSession();
   const [accounts, setAccounts] = useState<IAccount[]>([]);
+  const [openModal, setOpenModal] = useState(false);
 
   const fetchData = async () => {
     if (session?.access_token) {
@@ -58,38 +60,46 @@ const TransactionsHeader = () => {
   }
   useEffect(() => {
     fetchData();
-  }, [session])
+  }, [session]);
+
+  const onClickNewAccount = () => {
+    setOpenModal(true);
+  };
 
   return (
-    <Grid container spacing={4}>
-      <Grid size={4}>
-        <TransactionsAssetsCard data={accounts} />
+    <>
+      <Grid container spacing={4}>
+        <Grid size={4}>
+          <TransactionsAssetsCard data={accounts} />
+        </Grid>
+        <Grid size={8}>
+          <Card sx={{ mb: 2, mt: 2 }}>
+            <CardHeader title={"Accounts"} subheader={"All your accounts"} action={
+              <Fab color="primary" aria-label="add" onClick={() => onClickNewAccount()}>
+                <AddIcon />
+              </Fab>} />
+            <CardContent>
+              <Grid display={"block"}>
+                {accounts.length > 0 ?
+                  accounts.map(item => <AccountCard data={item} key={item._id} />)
+                  :
+                  <>
+                    <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
+                      <CardContent>
+                        <Typography sx={{ color: "text.secondary" }} variant="h4">No data</Typography>
+                      </CardContent>
+                    </Card>
+                  </>
+                }
+              </Grid>
+            </CardContent>
+            <CardActions>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid size={8}>
-        <Card sx={{ mb: 2, mt: 2 }}>
-          <CardHeader title={"Accounts"} subheader={"All your accounts"} action={<Fab color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>} />
-          <CardContent>
-            <Grid display={"block"}>
-              {accounts.length > 0 ?
-                accounts.map(item => <AccountCard data={item} key={item._id} />)
-                :
-                <>
-                  <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
-                    <CardContent>
-                      <Typography sx={{ color: "text.secondary" }} variant="h4">No data</Typography>
-                    </CardContent>
-                  </Card>
-                </>
-              }
-            </Grid>
-          </CardContent>
-          <CardActions>
-          </CardActions>
-        </Card>
-      </Grid>
-    </Grid>
+      <TransactionsAccountModal open={openModal} close={() => setOpenModal(false)} fetch={() => fetchData()} />
+    </>
   );
 };
 

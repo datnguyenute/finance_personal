@@ -26,6 +26,7 @@
     "query-string": "^9.1.1",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.53.0",
     "styled-components": "^6.1.13"
   },
   "devDependencies": {

@@ -34,4 +34,9 @@ declare global {
     balance: number,
     _id: number,
   }
+
+  interface IResAccount {
+    _id: number,
+    createdAt: string
+  }
 }

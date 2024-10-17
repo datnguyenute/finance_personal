@@ -28,4 +28,10 @@ declare global {
     };
     result: T[];
   }
+
+  interface IAccount {
+    name: string,
+    balance: number,
+    _id: number,
+  }
 }

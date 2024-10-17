@@ -13,8 +13,15 @@ import AddIcon from '@mui/icons-material/Add';
 
 import Grid from "@mui/material/Grid2";
 import { GridMoreVertIcon } from "@mui/x-data-grid";
+import { useSession } from "next-auth/react";
+import { sendRequest } from "@/utils/api";
+import { useEffect, useState } from "react";
 
-const AccountCard = () => {
+interface IPropsAccountCard {
+  data: IAccount
+}
+const AccountCard = (props: IPropsAccountCard) => {
+  const { data } = props;
   return (
     <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
       <CardHeader
@@ -23,16 +30,35 @@ const AccountCard = () => {
             <GridMoreVertIcon />
           </IconButton>
         }
-        title="Account 1"
+        title={data.name}
       />
       <CardContent>
-        <Typography sx={{ color: "text.secondary" }} variant="h4">35$</Typography>
+        <Typography sx={{ color: "text.secondary" }} variant="h4">{data.balance}$</Typography>
       </CardContent>
     </Card>
   );
 };
 
 const TransactionsHeader = () => {
+  const { data: session } = useSession();
+  const [accounts, setAccounts] = useState<IAccount[]>([]);
+
+  const fetchData = async () => {
+    if (session?.access_token) {
+      const data = await sendRequest<IAccount[]>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/by-user`,
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${session?.access_token}`
+        },
+      });
+      setAccounts(data || []);
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  }, [session])
+
   return (
     <Grid container spacing={4}>
       <Grid size={4}>
@@ -55,11 +81,17 @@ const TransactionsHeader = () => {
           </Fab>} />
           <CardContent>
             <Grid display={"block"}>
-              <AccountCard />
-              <AccountCard />
-              <AccountCard />
-              <AccountCard />
-              <AccountCard />
+              {accounts.length > 0 ?
+                accounts.map(item => <AccountCard data={item} key={item._id} />)
+                :
+                <>
+                  <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
+                    <CardContent>
+                      <Typography sx={{ color: "text.secondary" }} variant="h4">No data</Typography>
+                    </CardContent>
+                  </Card>
+                </>
+              }
             </Grid>
           </CardContent>
           <CardActions>

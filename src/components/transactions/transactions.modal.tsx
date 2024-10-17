@@ -20,7 +20,7 @@ interface IProps {
   close: () => void,
 }
 
-const TransactionModal = (props: IProps) => {
+const TransactionsModal = (props: IProps) => {
   const { open } = props;
 
   return (
@@ -90,4 +90,4 @@ const TransactionModal = (props: IProps) => {
   )
 }
 
-export default TransactionModal;
+export default TransactionsModal;

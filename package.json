@@ -22,6 +22,8 @@
     "@mui/x-date-pickers": "^7.19.0",
     "dayjs": "^1.11.13",
     "next": "latest",
+    "next-auth": "^4.24.8",
+    "query-string": "^9.1.1",
     "react": "latest",
     "react-dom": "latest",
     "styled-components": "^6.1.13"

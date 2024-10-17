@@ -1,6 +1,6 @@
 import { Box, Card, CardActions, CardContent, Typography, Button } from "@mui/material";
 
-const TransactionCard = () => {
+const TransactionsCard = () => {
   return (
     <Card sx={{ mb: 2, mt: 2 }}>
       <CardContent>
@@ -21,4 +21,4 @@ const TransactionCard = () => {
   );
 }
 
-export default TransactionCard
+export default TransactionsCard

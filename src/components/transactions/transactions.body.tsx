@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@mui/material";
 import TransactionGrid from "./transactions.grid";
 
-const TransactionBody = () => {
+const TransactionsBody = () => {
   const [openTransactionsModal, setOpenTransactionModal] = useState(false);
   const onClickNewTransactions = () => {
     setOpenTransactionModal(true);
@@ -31,4 +31,4 @@ const TransactionBody = () => {
   )
 }
 
-export default TransactionBody
+export default TransactionsBody

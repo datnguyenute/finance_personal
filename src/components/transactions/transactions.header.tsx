@@ -32,7 +32,7 @@ const AccountCard = () => {
   );
 };
 
-const TransactionHeader = () => {
+const TransactionsHeader = () => {
   return (
     <Grid container spacing={4}>
       <Grid size={4}>
@@ -70,4 +70,4 @@ const TransactionHeader = () => {
   );
 };
 
-export default TransactionHeader;
+export default TransactionsHeader;

@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import ToggleColorMode from './ToggleColorMode';
 import getSignInSideTheme from './theme/getSignInSideTheme';
+import { useRouter } from 'next/navigation';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: 'relative',
@@ -47,10 +48,16 @@ export default function TemplateFrame({
   toggleColorMode,
   children,
 }: TemplateFrameProps) {
+  const router = useRouter();
+
   const handleChange = (event: SelectChangeEvent) => {
     toggleCustomTheme(event.target.value === 'custom');
   };
   const signInSideTheme = createTheme(getSignInSideTheme(mode));
+
+  const redirectToHome = () => {
+    router.push('/')
+  }
 
   return (
     <ThemeProvider theme={signInSideTheme}>
@@ -69,17 +76,17 @@ export default function TemplateFrame({
             <Button
               variant="text"
               size="small"
-              aria-label="Back to templates"
+              aria-label="Back to home page"
               startIcon={<ArrowBackRoundedIcon />}
               component="a"
-              href="/material-ui/getting-started/templates/"
+              onClick={() => redirectToHome()}
               sx={{ display: { xs: 'none', sm: 'flex' } }}
             >
-              Back to templates
+              Back to home page
             </Button>
             <IconButton
               size="small"
-              aria-label="Back to templates"
+              aria-label="Back to home page"
               component="a"
               href="/material-ui/getting-started/templates/"
               sx={{ display: { xs: 'auto', sm: 'none' } }}
@@ -87,7 +94,7 @@ export default function TemplateFrame({
               <ArrowBackRoundedIcon />
             </IconButton>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <FormControl variant="outlined" sx={{ minWidth: 180 }}>
+              {/* <FormControl variant="outlined" sx={{ minWidth: 180 }}>
                 <Select
                   size="small"
                   labelId="theme-select-label"
@@ -99,7 +106,7 @@ export default function TemplateFrame({
                   <MenuItem value="custom">Custom Theme</MenuItem>
                   <MenuItem value="material">Material Design 2</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
               <ToggleColorMode
                 data-screenshot="toggle-mode"
                 mode={mode}

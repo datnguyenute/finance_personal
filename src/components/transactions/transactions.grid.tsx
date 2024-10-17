@@ -45,7 +45,7 @@ const rows = [
 ];
 
 
-const TransactionGrid = () => {
+const TransactionsGrid = () => {
   return (
     <Box sx={{ height: 400, width: '100%', pt:1 }}>
       <DataGrid
@@ -66,4 +66,4 @@ const TransactionGrid = () => {
   )
 }
 
-export default TransactionGrid;
+export default TransactionsGrid;

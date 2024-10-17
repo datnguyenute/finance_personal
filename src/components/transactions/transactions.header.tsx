@@ -16,6 +16,7 @@ import { GridMoreVertIcon } from "@mui/x-data-grid";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useEffect, useState } from "react";
+import TransactionsAssetsCard from "./assets.card";
 
 interface IPropsAccountCard {
   data: IAccount
@@ -62,17 +63,7 @@ const TransactionsHeader = () => {
   return (
     <Grid container spacing={4}>
       <Grid size={4}>
-        <Card sx={{ mb: 2, mt: 2 }}>
-          <CardHeader title={"Total assets"} subheader={"Infomation of your account"} />
-          <CardContent>
-            <Typography variant="h4">
-              45$
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </Card>
+        <TransactionsAssetsCard data={accounts} />
       </Grid>
       <Grid size={8}>
         <Card sx={{ mb: 2, mt: 2 }}>

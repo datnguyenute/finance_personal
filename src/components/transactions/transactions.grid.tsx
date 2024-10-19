@@ -1,66 +1,55 @@
 import { Box } from "@mui/material";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridCallbackDetails, GridColDef, GridPaginationMeta, GridPaginationModel } from '@mui/x-data-grid';
 
-const columns: GridColDef<(typeof rows)[number]>[] = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 110,
-    editable: true,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-  },
+const columns: GridColDef<ITransaction>[] = [
+  { field: '_id', headerName: 'ID', width: 100 },
+  { field: 'type', headerName: 'Type', width: 100 },
+  { field: 'category', headerName: 'Category', width: 150 },
+  { field: 'amount', headerName: 'Amount', width: 150 },
+  { field: 'date', headerName: 'Date', width: 180 },
+  { field: 'description', headerName: 'Description', width: 180, editable: true },
+  { field: 'updatedAt', headerName: 'Last update', width: 180 },
 ];
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+interface ITransactionsGridProps {
+  data: ITransaction[],
+  paginationMeta: GridPaginationModel,
+  totalCount: number,
+  updatePagination: (current: number, pageSize: number) => void
+}
+const TransactionsGrid = (props: ITransactionsGridProps) => {
+  const { data, updatePagination, paginationMeta, totalCount } = props;
 
+  console.log({ data, updatePagination, paginationMeta, totalCount });
 
-const TransactionsGrid = () => {
+  const onPaginationMetaChange = (paginationMeta: GridPaginationMeta) => {
+    console.log(paginationMeta);
+  }
+
+  const onPaginationModelChange = (model: GridPaginationModel, details: GridCallbackDetails) => {
+    console.log({ model, details });
+    updatePagination(model.page + 1, model.pageSize);
+  }
   return (
-    <Box sx={{ height: 400, width: '100%', pt:1 }}>
+    <Box sx={{ height: 400, width: '100%', pt: 1 }}>
       <DataGrid
-        rows={rows}
+        rows={data}
         columns={columns}
+        rowCount={totalCount}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: paginationMeta.pageSize,
+              page: paginationMeta.page,
             },
           },
         }}
-        pageSizeOptions={[5]}
-        checkboxSelection
+        getRowId={(row) => row._id}
+        pageSizeOptions={[5, 10, 15]}
+        paginationMode="server"
         disableRowSelectionOnClick
+        onPaginationMetaChange={onPaginationMetaChange}
+        onPaginationModelChange={onPaginationModelChange}
       />
     </Box>
   )

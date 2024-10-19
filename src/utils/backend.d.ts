@@ -30,13 +30,18 @@ declare global {
   }
 
   interface IAccount {
-    name: string,
-    balance: number,
-    _id: number,
+    name: string;
+    balance: number;
+    _id: number;
   }
 
-  interface IResAccount {
-    _id: number,
-    createdAt: string
+  interface ITransaction {
+    _id: string;
+    type: string;
+    category: string;
+    date: Date;
+    amount: number;
+    updatedAt: string;
+    description: string;
   }
 }

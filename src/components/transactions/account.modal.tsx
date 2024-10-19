@@ -32,7 +32,6 @@ interface ITransactionsAccountModalProps {
   fetch: () => void;
 }
 
-
 const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
   const { data: session } = useSession();
   const { open } = props;
@@ -41,15 +40,13 @@ const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
     handleSubmit,
     reset,
   } = useForm<IAccount>();
-  // const { form, control, handleSubmit } = useForm()
-
 
   const onSubmitForm: SubmitHandler<IAccount> = async (data) => {
     console.log('>> data submit: ', data);
     // Submit
 
     if (session) {
-      const response = await sendRequest<IResAccount>({
+      const response = await sendRequest<IAccount>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts`,
         method: "POST",
         headers: {

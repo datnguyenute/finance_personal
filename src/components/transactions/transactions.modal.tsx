@@ -21,6 +21,7 @@ const style = {
 
 interface ITransactionsModalProps {
   open: boolean,
+  accounts: IAccount[],
   close: () => void,
   fetch: () => void;
 }
@@ -28,7 +29,7 @@ interface ITransactionsModalProps {
 const TransactionsModal = (props: ITransactionsModalProps) => {
   const { data: session } = useSession();
   const { showSnackbar } = useSnackbar();
-  const { open, close, fetch } = props;
+  const { open, close, fetch, accounts } = props;
 
   const {
     register,
@@ -54,6 +55,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
           date: data.date,
           amount: data.amount,
           description: data.description,
+          accountId: data.accountId,
         },
       });
 
@@ -93,6 +95,23 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
             <Grid display="flex" flexDirection="column" rowGap={2} py={2}>
 
               <FormControl fullWidth>
+                <InputLabel id="transaction-modal-account">Account</InputLabel>
+                <Select
+                  labelId="transaction-modal-account"
+                  id="transaction-modal-account-select"
+                  label="Account"
+                  {...register("accountId")}
+                >
+                  {accounts.length > 0 ?
+                    accounts.map(item =>
+                      <MenuItem value={item._id}>{item.name}</MenuItem>
+                    )
+                    : <></>
+                  }
+                </Select>
+              </FormControl>
+
+              <FormControl fullWidth>
                 <InputLabel id="transaction-modal-type">Type</InputLabel>
                 <Select
                   labelId="transaction-modal-type"
@@ -116,7 +135,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
                   <MenuItem value={"Online Subscription"}>Online Subscription</MenuItem>
                   <MenuItem value={"Groceries"}>Groceries</MenuItem>
                   <MenuItem value={"Salary"}>Salary</MenuItem>
-                  <MenuItem value={"40"}>Refund</MenuItem>
+                  <MenuItem value={"Refund"}>Refund</MenuItem>
                 </Select>
               </FormControl>
               <FormControl fullWidth>

@@ -1,10 +1,53 @@
-import { Box } from "@mui/material";
-import { DataGrid, GridCallbackDetails, GridColDef, GridPaginationMeta, GridPaginationModel } from '@mui/x-data-grid';
+"use client"
+import { Box, Chip, ChipPropsColorOverrides } from "@mui/material"
+import { OverridableStringUnion } from '@mui/types';
+;
+import { DataGrid, GridCallbackDetails, GridCellParams, GridColDef, GridPaginationMeta, GridPaginationModel, GridRenderCellParams } from '@mui/x-data-grid';
+
+type ColorType = OverridableStringUnion<
+  'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
+  ChipPropsColorOverrides
+>;
+const getRandomColor = (input: string | undefined): ColorType => {
+  const predefinedColors: Record<string, ColorType> = {
+    'Online Subscription': 'primary',
+    'Groceries': 'secondary',
+    'Salary': 'info',
+    'Refund': 'default',
+    'Income': 'success',
+    'Expense': 'warning',
+  };
+
+  // Return predefined color if exists, otherwise random
+  if (input && predefinedColors[input]) {
+    return predefinedColors[input];
+  }
+  const colors: ColorType[] = [
+    'default',
+    'primary',
+    'secondary',
+    'error',
+    'info',
+    'success',
+    'warning',
+  ];
+
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+};
 
 const columns: GridColDef<ITransaction>[] = [
   { field: '_id', headerName: 'ID', width: 100 },
-  { field: 'type', headerName: 'Type', width: 100 },
-  { field: 'category', headerName: 'Category', width: 150 },
+  {
+    field: 'type', headerName: 'Type', width: 100, renderCell: (params: GridRenderCellParams<any, string>) => (
+      <Chip label={params.value?.toString()} color={getRandomColor(params.value)} variant="filled" />
+    ),
+  },
+  {
+    field: 'category', headerName: 'Category', width: 150, renderCell: (params: GridRenderCellParams<any, string>) => (
+      <Chip label={params.value?.toString()} color={getRandomColor(params.value)} variant="outlined" />
+    ),
+  },
   {
     field: 'amount', headerName: 'Amount', width: 150, valueGetter: (_, row) => new Intl.NumberFormat('vi-VN', {
       style: 'currency',

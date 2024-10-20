@@ -8,6 +8,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Stack,
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,6 +21,7 @@ import { useEffect, useState } from "react";
 import TransactionsAssetsCard from "./assets.card";
 import TransactionsAccountModal from "./account.modal";
 import { useSnackbar } from "@/utils/snackbar.wrapper";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 interface IAccountCardMenuProps {
   anchorEl: null | HTMLElement;
@@ -90,17 +92,21 @@ const AccountCard = (props: IPropsAccountCard) => {
   };
 
   return (
-    <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
+    <Card sx={{ mx: 1, width: 220, display: "inline-block" }}>
       <CardHeader
+
         action={
           <IconButton aria-label="settings" onClick={handleClick}>
             <GridMoreVertIcon />
           </IconButton>
         }
-        title={data.name}
+        title={<Stack alignItems="center"
+          direction="row"
+          fontSize={18}
+          gap={2}><AccountBalanceWalletIcon /> {data.name}</Stack>}
       />
       <CardContent>
-        <Typography sx={{ color: "text.secondary" }} variant="h4">
+        <Typography sx={{ color: "text.secondary" }} variant="h5">
           {new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND'
@@ -154,12 +160,17 @@ const TransactionsHeader = () => {
               title={"Accounts"}
               subheader={"All your accounts"}
               action={
-                <Fab color="primary" aria-label="add" onClick={() => onClickNewAccount()}>
-                  <AddIcon />
-                </Fab>
+                accounts.length < 3 ?
+                  <Fab color="primary" aria-label="add" onClick={() => onClickNewAccount()} hidden={true}>
+                    <AddIcon />
+                  </Fab>
+                  :
+                  // Limit 3 accounts
+                  <></>
               }
+
             />
-            <CardContent>
+            <CardContent sx={{ py: 0 }}>
               <Grid display={"block"}>
                 {accounts.length > 0 ? (
                   accounts.map((item) => <AccountCard data={item} key={item._id} fetch={fetchData} />)
@@ -179,7 +190,7 @@ const TransactionsHeader = () => {
             <CardActions></CardActions>
           </Card>
         </Grid>
-      </Grid>
+      </Grid >
       <TransactionsAccountModal open={openModal} close={() => setOpenModal(false)} fetch={() => fetchData()} />
     </>
   );

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
+import { useSnackbar } from "@/utils/snackbar.wrapper";
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,6 +27,7 @@ interface ITransactionsModalProps {
 
 const TransactionsModal = (props: ITransactionsModalProps) => {
   const { data: session } = useSession();
+  const { showSnackbar } = useSnackbar();
   const { open, close, fetch } = props;
 
   const {
@@ -58,6 +60,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
       console.log('>> res: ', response);
       if (response._id) {
         // Success re fetch data
+        showSnackbar("Create transaction success", "success");
         reset();
         fetch();
         close();
@@ -120,7 +123,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
                 <InputLabel htmlFor="transaction-modal-amount">Amount</InputLabel>
                 <OutlinedInput
                   id="transaction-modal-amount"
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  startAdornment={<InputAdornment position="start">đ</InputAdornment>}
                   label="Amount"
                   {...register("amount")}
                 />

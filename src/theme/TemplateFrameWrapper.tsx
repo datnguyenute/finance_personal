@@ -44,14 +44,15 @@ interface TemplateFrameWrapperProps {
 }
 
 export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
-  const { data: session } = useSession();
-  console.log(">> data: ", session);
-
   const router = useRouter();
   const { children } = props;
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const { data: session } = useSession();
+  console.log(">> data: ", session);
+
 
   // Get color mode from Localstorage
   React.useEffect(() => {
@@ -98,6 +99,8 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
   const redirectToLoginPage = () => {
     router.push("/auth/login");
   };
+
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -208,7 +211,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
               <Box>
                 <ToggleColorMode data-screenshot="toggle-mode" mode={mode} toggleColorMode={toggleColorMode} />
               </Box>
-              {session ? (
+              {(session && !session.error) ? (
                 <>
                   <Box>
                     <Tooltip title="Open settings">

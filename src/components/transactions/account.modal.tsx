@@ -12,8 +12,9 @@ import {
 import Grid from "@mui/material/Grid2";
 import CloseIcon from "@mui/icons-material/Close";
 import { FieldValue, SubmitHandler, useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
+import { useSnackbar } from "@/utils/snackbar.wrapper";
 const style = {
   position: "absolute",
   top: "50%",
@@ -34,6 +35,11 @@ interface ITransactionsAccountModalProps {
 
 const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
   const { data: session } = useSession();
+  const { showSnackbar } = useSnackbar();
+  if (session?.error === "RefreshAccessTokenError") {
+    console.log({ session })
+  }
+
   const { open } = props;
   const {
     register,
@@ -60,6 +66,8 @@ const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
 
       console.log('>> res: ', response);
       if (response._id) {
+        showSnackbar("Create account success", "success");
+
         // Success re fetch data
         reset();
         props.fetch();
@@ -92,7 +100,7 @@ const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
                 <InputLabel htmlFor="transaction-account-modal-balance">Balance</InputLabel>
                 <OutlinedInput
                   id="transaction-account-modal-balance"
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  startAdornment={<InputAdornment position="start">đ</InputAdornment>}
                   label="Balance"
                   {...register("balance")}
                 />

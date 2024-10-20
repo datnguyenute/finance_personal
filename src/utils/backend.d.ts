@@ -32,7 +32,7 @@ declare global {
   interface IAccount {
     name: string;
     balance: number;
-    _id: number;
+    _id: string;
   }
 
   interface ITransaction {

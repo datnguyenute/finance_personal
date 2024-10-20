@@ -5,7 +5,12 @@ const columns: GridColDef<ITransaction>[] = [
   { field: '_id', headerName: 'ID', width: 100 },
   { field: 'type', headerName: 'Type', width: 100 },
   { field: 'category', headerName: 'Category', width: 150 },
-  { field: 'amount', headerName: 'Amount', width: 150 },
+  {
+    field: 'amount', headerName: 'Amount', width: 150, valueGetter: (_, row) => new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND'
+    }).format(row.amount),
+  },
   { field: 'date', headerName: 'Date', width: 180 },
   { field: 'description', headerName: 'Description', width: 180, editable: true },
   { field: 'updatedAt', headerName: 'Last update', width: 180 },

@@ -5,10 +5,18 @@ import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@mui/material";
 import TransactionGrid from "./transactions.grid";
 import { sendRequest } from "@/utils/api";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const TransactionsBody = () => {
+  const router = useRouter();
   const { data: session } = useSession();
+  if (session?.error === "RefreshAccessTokenError") {
+    console.log({session})
+    router.push("/auth/login");
+
+    // signIn("credentials") // Force sign in to obtain a new set of access and refresh tokens
+  }
 
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
   const [openTransactionsModal, setOpenTransactionModal] = useState(false);

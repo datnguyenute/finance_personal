@@ -19,7 +19,10 @@ const TransactionsAssetsCard = (props: IPropsTransactionsAssetsCard) => {
   }, [data])
 
   const calcTotalAsset = (accounts: IAccount[]): number => {
-    return accounts.reduce((prev, curr) => prev + curr.balance, 0);
+    if (accounts.length > 0) {
+      return accounts.reduce((prev, curr) => prev + curr.balance, 0);
+    }
+    return 0;
   }
 
   return (
@@ -27,7 +30,10 @@ const TransactionsAssetsCard = (props: IPropsTransactionsAssetsCard) => {
       <CardHeader title={"Total assets"} subheader={`Infomation of your account (${totalAccounts} accounts)`} />
       <CardContent>
         <Typography variant="h4">
-          {totalAssets}$
+          {new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+          }).format(totalAssets)}
         </Typography>
       </CardContent>
       <CardActions>

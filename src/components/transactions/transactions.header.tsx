@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import TransactionsAssetsCard from "./assets.card";
 import TransactionsAccountModal from "./account.modal";
 import { useSnackbar } from "@/utils/snackbar.wrapper";
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 interface IAccountCardMenuProps {
   anchorEl: null | HTMLElement;
@@ -44,17 +44,21 @@ const AccountCardMenu = (props: IAccountCardMenuProps) => {
       }}
     >
       {/* <MenuItem onClick={close}>Update</MenuItem> */}
-      <MenuItem onClick={() => {
-        close();
-        deleteAccount()
-      }}>Delete</MenuItem>
+      <MenuItem
+        onClick={() => {
+          close();
+          deleteAccount();
+        }}
+      >
+        Delete
+      </MenuItem>
     </Menu>
   );
 };
 
 interface IPropsAccountCard {
   data: IAccount;
-  fetch: () => void
+  fetch: () => void;
 }
 const AccountCard = (props: IPropsAccountCard) => {
   const { data: session } = useSession();
@@ -78,7 +82,7 @@ const AccountCard = (props: IPropsAccountCard) => {
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/${id}`,
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${session?.access_token}`
+        Authorization: `Bearer ${session?.access_token}`,
       },
     });
 
@@ -94,22 +98,22 @@ const AccountCard = (props: IPropsAccountCard) => {
   return (
     <Card sx={{ mx: 1, width: 220, display: "inline-block" }}>
       <CardHeader
-
         action={
           <IconButton aria-label="settings" onClick={handleClick}>
             <GridMoreVertIcon />
           </IconButton>
         }
-        title={<Stack alignItems="center"
-          direction="row"
-          fontSize={18}
-          gap={2}><AccountBalanceWalletIcon /> {data.name}</Stack>}
+        title={
+          <Stack alignItems="center" direction="row" fontSize={18} gap={2}>
+            <AccountBalanceWalletIcon /> {data.name}
+          </Stack>
+        }
       />
       <CardContent>
         <Typography sx={{ color: "text.secondary" }} variant="h5">
-          {new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
+          {new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
           }).format(data.balance)}
         </Typography>
       </CardContent>
@@ -123,26 +127,15 @@ const AccountCard = (props: IPropsAccountCard) => {
   );
 };
 
-const TransactionsHeader = () => {
-  const { data: session } = useSession();
-  const [accounts, setAccounts] = useState<IAccount[]>([]);
-  const [openModal, setOpenModal] = useState(false);
+interface ITransactionsHeaderProps {
+  accounts: IAccount[];
+  fetchAccounts: () => void;
+}
 
-  const fetchData = async () => {
-    if (session?.access_token) {
-      const data = await sendRequest<IAccount[]>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/by-user`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-        },
-      });
-      setAccounts(data || []);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [session]);
+const TransactionsHeader = (props: ITransactionsHeaderProps) => {
+  const { accounts, fetchAccounts } = props;
+
+  const [openModal, setOpenModal] = useState(false);
 
   const onClickNewAccount = () => {
     setOpenModal(true);
@@ -160,20 +153,20 @@ const TransactionsHeader = () => {
               title={"Accounts"}
               subheader={"All your accounts"}
               action={
-                accounts.length < 3 ?
+                accounts.length < 3 ? (
                   <Fab color="primary" aria-label="add" onClick={() => onClickNewAccount()} hidden={true}>
                     <AddIcon />
                   </Fab>
-                  :
+                ) : (
                   // Limit 3 accounts
                   <></>
+                )
               }
-
             />
             <CardContent sx={{ py: 0 }}>
               <Grid display={"block"}>
                 {accounts.length > 0 ? (
-                  accounts.map((item) => <AccountCard data={item} key={item._id} fetch={fetchData} />)
+                  accounts.map((item) => <AccountCard data={item} key={item._id} fetch={fetchAccounts} />)
                 ) : (
                   <>
                     <Card sx={{ m: 1, width: 210, display: "inline-block" }}>
@@ -190,8 +183,8 @@ const TransactionsHeader = () => {
             <CardActions></CardActions>
           </Card>
         </Grid>
-      </Grid >
-      <TransactionsAccountModal open={openModal} close={() => setOpenModal(false)} fetch={() => fetchData()} />
+      </Grid>
+      <TransactionsAccountModal open={openModal} close={() => setOpenModal(false)} fetch={fetchAccounts} />
     </>
   );
 };

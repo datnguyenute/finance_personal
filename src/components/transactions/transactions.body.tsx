@@ -5,21 +5,20 @@ import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@mui/material";
 import TransactionGrid from "./transactions.grid";
 import { sendRequest } from "@/utils/api";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface ITransactionsBodyProps {
-  accounts: IAccount[]
+  accounts: IAccount[];
+  fetchAccounts: () => void;
 }
 const TransactionsBody = (props: ITransactionsBodyProps) => {
-  const { accounts } = props;
+  const { accounts, fetchAccounts } = props;
   const router = useRouter();
   const { data: session } = useSession();
   if (session?.error === "RefreshAccessTokenError") {
-    console.log({ session })
+    console.log({ session });
     router.push("/auth/login");
-
-    // signIn("credentials") // Force sign in to obtain a new set of access and refresh tokens
   }
 
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
@@ -76,6 +75,7 @@ const TransactionsBody = (props: ITransactionsBodyProps) => {
         open={openTransactionsModal}
         close={() => setOpenTransactionModal(false)}
         fetch={() => fetchData(current, pageSize)}
+        fetchAccount={fetchAccounts}
       />
     </>
   );

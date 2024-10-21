@@ -12,14 +12,14 @@ const Transactions = () => {
   const [accounts, setAccounts] = useState<IAccount[]>([]);
   const fetchData = async () => {
     if (session?.access_token) {
-      const data = await sendRequest<IAccount[]>({
+      const data = await sendRequest<IBackendRes<IAccount[]>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/by-user`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
       });
-      setAccounts(data || []);
+      setAccounts((data && data.data) || []);
     }
   };
   useEffect(() => {

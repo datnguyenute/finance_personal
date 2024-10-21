@@ -78,7 +78,7 @@ const AccountCard = (props: IPropsAccountCard) => {
   const deleteAccount = async (id: string) => {
     console.log("Deleting: ", id);
     // Submit
-    const response = await sendRequest<any>({
+    const response = await sendRequest<IBackendRes<any>>({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/${id}`,
       method: "DELETE",
       headers: {
@@ -86,7 +86,7 @@ const AccountCard = (props: IPropsAccountCard) => {
       },
     });
 
-    if (response.deleted === 1) {
+    if (response.data && response.data.deleted === 1) {
       // Success re fetch data
       showSnackbar("Delete account success", "info");
       fetch();

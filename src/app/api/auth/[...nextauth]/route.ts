@@ -7,31 +7,29 @@ import GithubProvider from "next-auth/providers/github";
 import dayjs from "dayjs";
 
 async function refreshAccessToken(token: JWT) {
-
   const res = await sendRequest<IBackendRes<JWT>>({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
-      method: "POST",
-      body: { refresh_token: token?.refresh_token }
-  })
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
+    method: "POST",
+    body: { refresh_token: token?.refresh_token },
+  });
 
   if (res.data) {
-      return {
-          ...token,
-          access_token: res.data?.access_token ?? "",
-          refresh_token: res.data?.refresh_token ?? "",
-          access_expire: dayjs(new Date()).add(
-              +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
-          ).unix(),
-          error: ""
-      }
+    return {
+      ...token,
+      access_token: res.data?.access_token ?? "",
+      refresh_token: res.data?.refresh_token ?? "",
+      access_expire: dayjs(new Date())
+        .add(+(process.env.TOKEN_EXPIRE_NUMBER as string), process.env.TOKEN_EXPIRE_UNIT as any)
+        .unix(),
+      error: "",
+    };
   } else {
-      //failed to refresh token => do nothing
-      return {
-          ...token,
-          error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar
-      }
+    //failed to refresh token => do nothing
+    return {
+      ...token,
+      error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar
+    };
   }
-
 }
 
 export const authOptions: AuthOptions = {
@@ -60,9 +58,10 @@ export const authOptions: AuthOptions = {
           },
         });
 
-        if (res && res.user) {
+
+        if (res && res.data) {
           // Any object returned will be saved in `user` property of the JWT
-          return res as any;
+          return res.data as any;
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           throw new Error(res.message as string);
@@ -99,17 +98,16 @@ export const authOptions: AuthOptions = {
         token.refresh_token = user.refresh_token;
         //@ts-ignore
         token.user = user.user;
-        // 
-        token.access_expire = dayjs(new Date()).add(
-          +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
-
-      ).unix();
+        //
+        token.access_expire = dayjs(new Date())
+          .add(+(process.env.TOKEN_EXPIRE_NUMBER as string), process.env.TOKEN_EXPIRE_UNIT as any)
+          .unix();
       }
 
-      const isTimeAfter = dayjs(dayjs(new Date())).isAfter(dayjs.unix((token?.access_expire as number ?? 0)));
+      const isTimeAfter = dayjs(dayjs(new Date())).isAfter(dayjs.unix((token?.access_expire as number) ?? 0));
 
       if (isTimeAfter) {
-          return refreshAccessToken(token)
+        return refreshAccessToken(token);
       }
 
       return token;
@@ -120,8 +118,7 @@ export const authOptions: AuthOptions = {
         session.refresh_token = token.refresh_token;
         session.user = token.user;
         session.access_expire = token.access_expire;
-        session.error = token.error
-
+        session.error = token.error;
       }
 
       return session;
@@ -131,4 +128,4 @@ export const authOptions: AuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };

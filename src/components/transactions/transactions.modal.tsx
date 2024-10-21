@@ -63,7 +63,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
 
     // Submit
     if (session) {
-      const response = await sendRequest<any>({
+      const response = await sendRequest<IBackendRes<any>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions`,
         method: "POST",
         headers: {
@@ -80,7 +80,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
       });
 
       console.log(">> res: ", response);
-      if (response._id) {
+      if (response.data) {
         // Success re fetch data
         showSnackbar("Create transaction success", "success");
         reset();

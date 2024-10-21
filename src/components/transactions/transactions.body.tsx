@@ -32,7 +32,7 @@ const TransactionsBody = (props: ITransactionsBodyProps) => {
 
   const fetchData = async (current: number, pageSize: number) => {
     if (session?.access_token) {
-      const data = await sendRequest<IModelPaginate<ITransaction>>({
+      const data = await sendRequest<IBackendRes<IModelPaginate<ITransaction>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions/by-user`,
         method: "GET",
         headers: {
@@ -43,8 +43,8 @@ const TransactionsBody = (props: ITransactionsBodyProps) => {
           pageSize: pageSize,
         },
       });
-      setTransactions(data.result || []);
-      setTotalCount(data.meta.total);
+      setTransactions((data && data.data && data.data.result) || []);
+      setTotalCount((data && data.data && data.data.meta && data.data.meta.total) || 0);
     }
   };
   useEffect(() => {

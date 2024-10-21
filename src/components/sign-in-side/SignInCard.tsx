@@ -108,6 +108,10 @@ export default function SignInCard() {
     return isValid;
   };
 
+  const redirectTo = (link: string) => {
+    router.push(link);
+  }
+
   return (
     <Card variant="outlined">
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
@@ -176,7 +180,7 @@ export default function SignInCard() {
         <Typography sx={{ textAlign: "center" }}>
           Don&apos;t have an account?{" "}
           <span>
-            <Link href="/material-ui/getting-started/templates/sign-in/" variant="body2" sx={{ alignSelf: "center" }}>
+            <Link variant="body2" sx={{ alignSelf: "center", cursor: 'pointer' }} onClick={() => redirectTo('/auth/register')}>
               Sign up
             </Link>
           </span>
@@ -193,7 +197,6 @@ export default function SignInCard() {
       </Box>
       <Snackbar
         open={openMessage}
-        // autoHideDuration={5000}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={() => setOpenMessage(false)} severity="error" sx={{ width: "100%" }}>

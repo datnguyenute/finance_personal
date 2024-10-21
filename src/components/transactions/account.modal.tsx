@@ -52,7 +52,7 @@ const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
     // Submit
 
     if (session) {
-      const response = await sendRequest<IAccount>({
+      const response = await sendRequest<IBackendRes<IAccount>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts`,
         method: "POST",
         headers: {
@@ -65,7 +65,7 @@ const TransactionsAccountModal = (props: ITransactionsAccountModalProps) => {
       });
 
       console.log('>> res: ', response);
-      if (response._id) {
+      if (response.data) {
         showSnackbar("Create account success", "success");
 
         // Success re fetch data

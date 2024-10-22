@@ -1,8 +1,9 @@
+import ReportBody from "@/components/report/report.body";
 
 const ReportPage = () => {
   return (
     <>
-      <div>Report page</div>
+      <ReportBody />
     </>
 
   )

@@ -33,7 +33,7 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-const HomeBody = () => {
+const ReportBody = () => {
   return (
     <>
       <Grid container justifyContent="space-between" alignItems="center">
@@ -135,4 +135,4 @@ const HomeBody = () => {
   );
 };
 
-export default HomeBody;
+export default ReportBody;

@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import SignInSide from "@/components/sign-in-side/SignInSide";
+import SignInSide from "@/components/sign-in-up/SignInSide";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 

@@ -1,9 +1,9 @@
-import HomeBody from "@/components/home/home.body";
+import MarketingPage from "@/components/dashboard-page/MarketingPage";
 
 const HomePage = async () => {
   return (
     <>
-      <HomeBody />
+      <MarketingPage />
     </>
   );
 };

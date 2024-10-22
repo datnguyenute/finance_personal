@@ -1,12 +1,11 @@
-import ReportBody from "@/components/report/report.body";
+import Report from "@/components/report/report";
 
 const ReportPage = () => {
   return (
     <>
-      <ReportBody />
+      <Report />
     </>
-
-  )
-}
+  );
+};
 
 export default ReportPage;

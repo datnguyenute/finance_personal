@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Divider } from "@mui/material";
+import { Box, Container, Divider } from "@mui/material";
 import TransactionsHeader from "./transactions.header";
 import TransactionsBody from "./transactions.body";
 import { useEffect, useState } from "react";
@@ -26,11 +26,26 @@ const Transactions = () => {
     fetchData();
   }, [session]);
   return (
-    <Container fixed>
-      <TransactionsHeader accounts={accounts} fetchAccounts={fetchData} />
-      <Divider sx={{ my: 2 }} />
-      <TransactionsBody accounts={accounts} fetchAccounts={fetchData} />
-    </Container>
+    <Box
+      sx={(theme) => ({
+        width: "100%",
+        backgroundRepeat: "no-repeat",
+        backgroundImage: "radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)",
+        ...theme.applyStyles("dark", {
+          backgroundImage: "radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)",
+        }),
+      })}
+    >
+      <Container
+        sx={{
+          pt: { xs: 2, sm: 2 },
+          pb: { xs: 2, sm: 4 },
+        }}
+      >
+        <TransactionsHeader accounts={accounts} fetchAccounts={fetchData} />
+        <TransactionsBody accounts={accounts} fetchAccounts={fetchData} />
+      </Container>
+    </Box>
   );
 };
 

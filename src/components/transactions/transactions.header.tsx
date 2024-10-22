@@ -1,9 +1,11 @@
 "use client";
 import {
+  Box,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Container,
   Fab,
   IconButton,
   Menu,
@@ -154,7 +156,7 @@ const TransactionsHeader = (props: ITransactionsHeaderProps) => {
               subheader={"All your accounts"}
               action={
                 accounts.length < 3 ? (
-                  <Fab color="primary" aria-label="add" onClick={() => onClickNewAccount()} hidden={true}>
+                  <Fab color="secondary" aria-label="add" onClick={() => onClickNewAccount()} hidden={true}>
                     <AddIcon />
                   </Fab>
                 ) : (

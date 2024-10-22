@@ -1,6 +1,7 @@
 "use client";
 import {
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -39,23 +40,23 @@ const ReportBody = () => {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid>
           <Typography variant="h6" component="h2">
-            Overview
+            Report overview
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Here what's happening in your finance.
           </Typography>
         </Grid>
-        <Grid>
+        <Stack alignItems="center" direction="row" gap={5}>
           <DatePicker
-            label="Date time from"
+            label="Date from"
             defaultValue={dayjs("2022-04-17")}
           />
-          <DatePicker label="Date time to" defaultValue={dayjs("2022-04-17")} />
-        </Grid>
+          <DatePicker label="Date to" defaultValue={dayjs("2022-04-17")} />
+        </Stack>
       </Grid>
-      <Grid container spacing={2}>
+      <Grid container spacing={4} my={2}>
         <Grid size={8}>
-          <Paper elevation={3}>
+          <Paper elevation={3} sx={{padding: 2, marginBottom: 2}}>
             <Typography variant="h5">Money Statistics</Typography>
 
             <BarChart
@@ -79,7 +80,7 @@ const ReportBody = () => {
             />
           </Paper>
 
-          <Paper elevation={3}>
+          <Paper elevation={3} sx={{padding: 2, marginBottom: 2}}>
             <TableContainer component={Paper}>
               <Typography variant="h5">Transaction history</Typography>
 
@@ -114,7 +115,7 @@ const ReportBody = () => {
           </Paper>
         </Grid>
         <Grid size={4}>
-          <Paper elevation={3} sx={{ height: "500px" }}>
+          <Paper elevation={3} sx={{padding: 2, marginBottom: 2, height:500}}>
             <Typography variant="h5">My Budgets</Typography>
             <Gauge
               value={75}

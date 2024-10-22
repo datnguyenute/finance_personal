@@ -247,6 +247,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                       <MenuItem
                         onClick={() => {
                           signOut();
+                          redirectToLoginPage();
                           handleCloseUserMenu();
                         }}
                       >

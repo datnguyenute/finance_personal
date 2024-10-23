@@ -150,7 +150,7 @@ const TransactionsHeader = (props: ITransactionsHeaderProps) => {
           <TransactionsAssetsCard data={accounts} />
         </Grid>
         <Grid size={8}>
-          <Card sx={{ mb: 2, mt: 2 }}>
+          <Card elevation={4} sx={{ mb: 2, mt: 2 }}>
             <CardHeader
               title={"Accounts"}
               subheader={"All your accounts"}

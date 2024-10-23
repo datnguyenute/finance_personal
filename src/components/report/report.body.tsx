@@ -23,7 +23,7 @@ const ReportBody = (props: IReportBodyProps) => {
       <Grid container spacing={4} my={2}>
         <Grid size={8}>
           <ReportStatistics report={report}/>
-          <ReportHistory />
+          <ReportHistory report={report}/>
         </Grid>
         <Grid size={4}>
           <ReportBudget report={report} />

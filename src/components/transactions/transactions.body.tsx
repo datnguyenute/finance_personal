@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import TransactionModal from "./transactions.modal";
 import Grid from "@mui/material/Grid2";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import TransactionGrid from "./transactions.grid";
 import { sendRequest } from "@/utils/api";
 import { useSession } from "next-auth/react";
@@ -57,7 +57,8 @@ const TransactionsBody = (props: ITransactionsBodyProps) => {
   };
 
   return (
-    <Box>
+    <Paper elevation={4} sx={{ padding: 2, marginBottom: 2 }}>
+
       <Grid display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
         <Typography variant="h5">Transactions</Typography>
         <Button variant="contained" color="secondary" onClick={() => onClickNewTransactions()}>
@@ -77,7 +78,7 @@ const TransactionsBody = (props: ITransactionsBodyProps) => {
         fetch={() => fetchData(current, pageSize)}
         fetchAccount={fetchAccounts}
       />
-    </Box>
+    </Paper>
   );
 };
 

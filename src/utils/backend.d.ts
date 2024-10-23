@@ -73,5 +73,6 @@ declare global {
   interface ITransactionReport {
     balanceFlow: IBalanceFlow;
     statistics: IStatistics;
+    transactionHistory: ITransaction[];
   }
 }

@@ -48,7 +48,7 @@ const TransactionsAssetsCard = (props: IPropsTransactionsAssetsCard) => {
   };
 
   return (
-    <Card sx={{ mb: 2, mt: 2 }}>
+    <Card elevation={4} sx={{ mb: 2, mt: 2 }}>
       <CardHeader title={"Total assets"} subheader={`Infomation of your account (${totalAccounts} accounts)`} />
       <CardContent>
         <Typography variant="h4">
@@ -70,7 +70,6 @@ const TransactionsAssetsCard = (props: IPropsTransactionsAssetsCard) => {
         })}
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
   );

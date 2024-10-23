@@ -1,10 +1,10 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { options } from "@/app/options";
 import SignInSide from "@/components/sign-in-up/SignInSide";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 const LoginPage = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(options);
   if (session && !session.error) {
     // redirect to homepage
     redirect("/")

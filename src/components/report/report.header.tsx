@@ -16,12 +16,16 @@ const ReportHeader = (props: IReportHeaderProps) => {
 
   const handleChangeDateFrom = (value: dayjs.Dayjs | null) => {
     if (value) {
-      setFrom(value.toDate());
+      if (value.isValid() && value.year() >= 2000 && value.year() <= dayjs().year()) {
+        setFrom(value.toDate());
+      }
     }
   };
   const handleChangeDateTo = (value: dayjs.Dayjs | null) => {
     if (value) {
-      setTo(value.toDate());
+      if (value.isValid() && value.year() >= 2000 && value.year() <= dayjs().year()) {
+        setTo(value.toDate());
+      }
     }
   };
 

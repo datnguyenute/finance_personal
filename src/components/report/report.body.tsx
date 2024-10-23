@@ -22,7 +22,7 @@ const ReportBody = (props: IReportBodyProps) => {
       <ReportHeader from={from} to={to} setFrom={setFrom} setTo={setTo} dataType={dataType} setDataType={setDataType}/>
       <Grid container spacing={4} my={2}>
         <Grid size={8}>
-          <ReportStatistics />
+          <ReportStatistics report={report}/>
           <ReportHistory />
         </Grid>
         <Grid size={4}>

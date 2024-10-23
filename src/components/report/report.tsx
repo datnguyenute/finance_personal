@@ -5,11 +5,7 @@ import ReportBody from "./report.body";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/utils/api";
 import { useEffect, useState } from "react";
-
-const DefaultTime = {
-  oneMonth: 30,
-  threeMonth: 90,
-};
+import dayjs from "dayjs";
 
 export const IDateType = {
   MONTH: 0,
@@ -19,32 +15,32 @@ export const IDateType = {
 }
 
 const Report = () => {
-  const today = new Date();
   const { data: session } = useSession();
-  const [transactions, setTransactions] = useState<ITransaction[]>([]);
-  const [dateFrom, setDateFrom] = useState<Date>(new Date(new Date().setDate(today.getDate() - DefaultTime.oneMonth)));
-  const [dateTo, setDateTo] = useState<Date>(new Date(today));
+  const [report, setReport] = useState<ITransactionReport>();
+  const [dateFrom, setDateFrom] = useState<Date>(dayjs().subtract(30, 'day').toDate());
+  const [dateTo, setDateTo] = useState<Date>(new Date());
   const [dateType, setDateType] = useState<number>(IDateType.MONTH);
 
   useEffect(() => {
-    fetchData(dateFrom, dateTo);
-  }, [session, dateFrom, dateTo]);
+    fetchData(dateFrom, dateTo, dateType);
+  }, [session, dateFrom, dateTo, dateType]);
 
   // Get transactions
-  const fetchData = async (dateFrom: Date, dateTo: Date) => {
+  const fetchData = async (dateFrom: Date, dateTo: Date, type: number) => {
     if (session?.access_token) {
-      const data = await sendRequest<IBackendRes<ITransaction[]>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions/report`,
+      const data = await sendRequest<IBackendRes<ITransactionReport>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions/for-report`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
         queryParams: {
-          from: formalDate(dateFrom),
-          to: formalDate(dateTo),
+          from: dateFrom,
+          to: dateTo,
+          type
         },
       });
-      setTransactions((data && data.data) || []);
+      setReport(data.data || undefined);
     }
   };
 
@@ -58,6 +54,28 @@ const Report = () => {
   const setDateToFormal = (value: string) => {
     setDateTo(new Date(value));
   };
+
+  const setDataTypeCustom = (type: number) => {
+    let startDate: Date;
+    let endDate: Date = new Date();
+    switch (type) {
+      case 0: // One month ago (30 days ago)
+        startDate = dayjs().subtract(30, 'day').toDate();
+        break;
+      case 1: // Six months ago (~ 182 days ago)
+        startDate = dayjs().subtract(6, 'month').toDate();
+        break;
+      case 2: // One year ago (365 days ago)
+        startDate = dayjs().subtract(1, 'year').add(1, 'day').toDate();
+        break;
+      default: // Custom date range
+        startDate = dayjs().subtract(30, 'day').toDate()
+        break;
+    }
+    setDateFrom(startDate);
+    setDateTo(endDate);
+    setDateType(type);
+  }
 
   return (
     <Box
@@ -77,11 +95,13 @@ const Report = () => {
         }}
       >
         <ReportBody
-          transactions={transactions}
-          from={formalDate(dateFrom)}
-          to={formalDate(dateTo)}
-          setFrom={setDateFromFormal}
-          setTo={setDateToFormal}
+          setDataType={setDataTypeCustom}
+          dataType={dateType}
+          report={report}
+          from={dateFrom}
+          to={dateTo}
+          setFrom={setDateFrom}
+          setTo={setDateTo}
         />
       </Container>
     </Box>

@@ -6,25 +6,27 @@ import ReportStatistics from "./report.statistics";
 import ReportHistory from "./report.history";
 
 interface IReportBodyProps {
-  transactions: ITransaction[],
-  from: string,
-  to: string,
-  setFrom: (date: string) => void,
-  setTo: (date: string) => void,
+  report: ITransactionReport | undefined,
+  from: Date,
+  to: Date,
+  dataType: number,
+  setFrom: (date: Date) => void,
+  setTo: (date: Date) => void,
+  setDataType: (value: number) => void,
 }
 const ReportBody = (props: IReportBodyProps) => {
-  const { from, to, transactions, setFrom, setTo } = props;
+  const { dataType, setDataType, from, to, report, setFrom, setTo } = props;
 
   return (
     <>
-      <ReportHeader from={from} to={to} setFrom={setFrom} setTo={setTo} />
+      <ReportHeader from={from} to={to} setFrom={setFrom} setTo={setTo} dataType={dataType} setDataType={setDataType}/>
       <Grid container spacing={4} my={2}>
         <Grid size={8}>
           <ReportStatistics />
           <ReportHistory />
         </Grid>
         <Grid size={4}>
-          <ReportBudget transactions={transactions} />
+          <ReportBudget report={report} />
         </Grid>
       </Grid>
     </>

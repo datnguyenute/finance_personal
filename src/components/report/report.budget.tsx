@@ -2,16 +2,6 @@ import { Paper, Typography } from "@mui/material";
 import { Gauge, gaugeClasses, PieChart } from "@mui/x-charts";
 import { useEffect, useState } from "react";
 
-const TypeBudget = {
-  INCOME: "Income",
-  EXPENSE: "Expense"
-}
-interface IBudget {
-  amount: number,
-  totalTransactions: number,
-  label: string
-}
-
 /**
  * Income/expense
  * Income: 50$
@@ -19,39 +9,11 @@ interface IBudget {
  * Hover: Bao nhiêu transaction
  */
 interface IReportBudgetProps {
-  transactions: ITransaction[],
+  report: ITransactionReport | undefined,
 }
 
 const ReportBudget = (props: IReportBudgetProps) => {
-  const { transactions } = props;
-  const [reportBudget, setReportBudget] = useState<IBudget[]>([])
-
-  useEffect(() => {
-    // Set data report
-    const budgetValue = getFromReport(transactions);
-    setReportBudget(budgetValue);
-  }, [transactions]);
-
-  const getFromReport = (transactions: ITransaction[]): IBudget[] => {
-    const budgets: IBudget[] = [];
-    Object.values(TypeBudget).forEach(item => {
-      const budgetValue = getDataFromType(transactions, item);
-      budgets.push(budgetValue);
-    });
-
-    return budgets;
-  }
-
-  const getDataFromType = (transactions: ITransaction[], type: string): IBudget => {
-    const typeTrans = transactions.filter(item => item.type === type);
-    const totalTransactions = typeTrans.length;
-    const amount = typeTrans.reduce((previousValue, current) => previousValue + current.amount, 0);
-    return {
-      amount,
-      totalTransactions,
-      label: type
-    }
-  }
+  const { report } = props;
 
   const formattedNumber = (number: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -73,14 +35,12 @@ const ReportBudget = (props: IReportBudgetProps) => {
         }
         series={[
           {
+            
             arcLabel: (item) => `${formattedNumber(item.value)}`,
-            data: reportBudget.map((item, index) => {
-              return {
-                id: index,
-                value: item.amount,
-                label: item.label,
-              }
-            }),
+            data: [
+              { id: 0, value: report && report.balanceFlow.income.totalAmount || 0, label: "Income"},
+              { id: 1, value: report && report.balanceFlow.expense.totalAmount || 0, label: "Expense"}
+            ],
             highlightScope: { fade: 'global', highlight: 'item' },
           },
         ]}

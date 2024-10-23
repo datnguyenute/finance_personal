@@ -1,24 +1,32 @@
-import { FormControl, InputLabel, Stack, Typography } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Typography } from "@mui/material";
+import { DatePicker, DateValidationError, PickerChangeHandlerContext } from "@mui/x-date-pickers";
 import Grid from "@mui/material/Grid2";
 import dayjs from "dayjs";
 
 interface IReportHeaderProps {
-  from: string,
-  to: string
-  setFrom: (date: string) => void,
-  setTo: (date: string) => void,
+  dataType: number;
+  from: Date;
+  to: Date;
+  setFrom: (date: Date) => void;
+  setTo: (date: Date) => void;
+  setDataType: (value: number) => void;
 }
 const ReportHeader = (props: IReportHeaderProps) => {
-  const { from, to, setFrom, setTo } = props;
+  const { dataType, setDataType, from, to, setFrom, setTo } = props;
 
-  const handleChangeDateFrom = (value: any) => {
-    const date = value.format('YYYY-MM-DD');
-    setFrom(date);
+  const handleChangeDateFrom = (value: dayjs.Dayjs | null) => {
+    if (value) {
+      setFrom(value.toDate());
+    }
   };
-  const handleChangeDateTo = (value: any) => {
-    const date = value.format('YYYY-MM-DD');
-    setTo(date);
+  const handleChangeDateTo = (value: dayjs.Dayjs | null) => {
+    if (value) {
+      setTo(value.toDate());
+    }
+  };
+
+  const handleChangeType = (event: SelectChangeEvent<number>) => {
+    setDataType(Number(event.target.value));
   };
 
   return (
@@ -31,30 +39,40 @@ const ReportHeader = (props: IReportHeaderProps) => {
           Here what's happening in your finance.
         </Typography>
       </Grid>
-      <Stack alignItems="center" direction="row" gap={3}>
-        {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
+      <Stack alignItems="center" direction="row" gap={2}>
+        <FormControl sx={{ minWidth: 150 }}>
           <InputLabel id="report-header-autowidth-label">Type filter</InputLabel>
           <Select
             labelId="report-header-autowidth-label"
             id="report-header-autowidth"
-            value={age}
-            onChange={handleChange}
+            value={dataType}
+            onChange={handleChangeType}
             autoWidth
-            label="Age"
+            label="Type filter"
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={21}>Twenty one</MenuItem>
-            <MenuItem value={22}>Twenty one and a half</MenuItem>
+            <MenuItem value={0}>Last month</MenuItem>
+            <MenuItem value={1}>Last 6 months</MenuItem>
+            <MenuItem value={2}>Last year</MenuItem>
+            <MenuItem value={3}>Custom</MenuItem>
           </Select>
-        </FormControl> */}
-        <DatePicker label="Date from" defaultValue={dayjs(from)} onChange={handleChangeDateFrom} />
-        <DatePicker label="Date to" defaultValue={dayjs(to)} onChange={handleChangeDateTo} />
+        </FormControl>
+        <DatePicker
+          readOnly={dataType !== 3}
+          label="Date from"
+          defaultValue={dayjs(from)}
+          value={dayjs(from)}
+          onChange={handleChangeDateFrom}
+        />
+        <DatePicker
+          readOnly={dataType !== 3}
+          label="Date to"
+          defaultValue={dayjs(to)}
+          value={dayjs(to)}
+          onChange={handleChangeDateTo}
+        />
       </Stack>
     </Grid>
-  )
-}
+  );
+};
 
 export default ReportHeader;

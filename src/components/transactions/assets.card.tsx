@@ -1,6 +1,7 @@
 import { Card, CardActions, CardContent, Typography, Button, CardHeader, LinearProgress, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
+import { PieChart } from "@mui/x-charts";
 
 interface IAccountPercent {
   account: IAccount;
@@ -49,7 +50,7 @@ const TransactionsAssetsCard = (props: IPropsTransactionsAssetsCard) => {
 
   return (
     <Card elevation={4} sx={{ mb: 2, mt: 2 }}>
-      <CardHeader title={"Total assets"} subheader={`Infomation of your account (${totalAccounts} accounts)`} />
+      <CardHeader title={"Available balance"} subheader={`Infomation of your account (${totalAccounts} assets)`} />
       <CardContent>
         <Typography variant="h4">
           {new Intl.NumberFormat("vi-VN", {
@@ -57,20 +58,24 @@ const TransactionsAssetsCard = (props: IPropsTransactionsAssetsCard) => {
             currency: "VND",
           }).format(totalAssets)}
         </Typography>
-        {accountPercents.map((item) => {
-          return (
-            <Grid container alignItems={"center"} mt={2}>
-              <Grid size={4}>{item.account.name}</Grid>
-              <Grid size={8}>
-                <LinearProgress sx={{ height: 12 }} color="secondary" variant="determinate" value={item.percent} />
-              </Grid>
-              <Divider />
-            </Grid>
-          );
-        })}
+        <PieChart
+          series={[
+            {
+              data: accountPercents.map((item, index) => {
+                return { id: index, value: item.percent, label: item.account.name };
+              }),
+              arcLabel: (item) => `${Math.round(item.value)}%`,
+              arcLabelMinAngle: 35,
+            },
+          ]}
+          sx={{
+            width: "100%",
+            marginTop: "16px",
+          }}
+          height={200}
+        />
       </CardContent>
-      <CardActions>
-      </CardActions>
+      <CardActions></CardActions>
     </Card>
   );
 };

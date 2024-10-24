@@ -78,8 +78,7 @@ const AccountCard = (props: IPropsAccountCard) => {
   };
 
   const deleteAccount = async (id: string) => {
-    console.log("Deleting: ", id);
-    // Submit
+    // Submit delete
     const response = await sendRequest<IBackendRes<any>>({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/${id}`,
       method: "DELETE",
@@ -152,8 +151,8 @@ const TransactionsHeader = (props: ITransactionsHeaderProps) => {
         <Grid size={8}>
           <Card elevation={4} sx={{ mb: 2, mt: 2 }}>
             <CardHeader
-              title={"Accounts"}
-              subheader={"All your accounts"}
+              title={"Assets list"}
+              subheader={"All your assets (up to 3 assets)"}
               action={
                 accounts.length < 3 ? (
                   <Fab color="secondary" aria-label="add" onClick={() => onClickNewAccount()} hidden={true}>

@@ -1,17 +1,30 @@
 "use client";
-import * as React from "react";
 import { createTheme, ThemeProvider, PaletteMode, styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import ToggleColorMode from "./ToggleColorMode";
-import { Avatar, Button, CssBaseline, Menu, MenuItem, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  CssBaseline,
+  Drawer,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
 import { useRouter } from "next/navigation";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { ReactNode, useEffect, useState } from "react";
+import Profile from "@/components/profile/profile";
+import ProfileAvatar from "@/components/profile/avatar";
+import { AccountCircle, ExitToApp } from "@mui/icons-material";
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: "relative",
@@ -40,22 +53,22 @@ const pages = [
 ];
 
 interface TemplateFrameWrapperProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
   const router = useRouter();
   const { children } = props;
-  const [mode, setMode] = React.useState<PaletteMode>("light");
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
   const { data: session } = useSession();
+  const [mode, setMode] = useState<PaletteMode>("light");
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [openProfile, setOpenProfile] = useState(false);
+
   console.log(">> data: ", session);
 
-
   // Get color mode from Localstorage
-  React.useEffect(() => {
+  useEffect(() => {
     // Check if there is a preferred mode in localStorage
     const savedMode = localStorage.getItem("themeMode") as PaletteMode | null;
     if (savedMode) {
@@ -100,8 +113,6 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
     router.push("/auth/login");
   };
 
-
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -114,7 +125,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
               display: "flex",
               justifyContent: "space-between",
               width: "100%",
-              p: "8px 12px",
+              p: "8px 24px",
             }}
           >
             <Stack
@@ -211,16 +222,14 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
               <Box>
                 <ToggleColorMode data-screenshot="toggle-mode" mode={mode} toggleColorMode={toggleColorMode} />
               </Box>
-              {(session && !session.error) ? (
+              {session && !session.error ? (
                 <>
                   <Box>
-                    <Tooltip title="Open settings">
-                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar alt="DatNB4" src="/static/images/avatar/2.jpg" />
-                      </IconButton>
-                    </Tooltip>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <ProfileAvatar />
+                    </IconButton>
                     <Menu
-                      sx={{ mt: "45px" }}
+                      sx={{ mt: "40px", width: "200px" }}
                       id="menu-appbar"
                       anchorEl={anchorElUser}
                       anchorOrigin={{
@@ -237,12 +246,14 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                     >
                       <MenuItem
                         onClick={() => {
+                          setOpenProfile(!openProfile);
                           handleCloseUserMenu();
                         }}
                       >
-                        <Link style={{ color: "unset", textDecoration: "unset" }} href={"/profile"}>
-                          Profile
-                        </Link>
+                        <ListItemIcon>
+                          <AccountCircle fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Profile</ListItemText>
                       </MenuItem>
                       <MenuItem
                         onClick={() => {
@@ -251,7 +262,10 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                           handleCloseUserMenu();
                         }}
                       >
-                        Log out
+                        <ListItemIcon>
+                          <ExitToApp fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Logout</ListItemText>
                       </MenuItem>
                     </Menu>
                   </Box>
@@ -268,6 +282,9 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
         </StyledAppBar>
         <Box sx={{ flex: "1 1", overflow: "auto" }}>{children}</Box>
       </Box>
+      <Drawer anchor={"right"} open={openProfile} onClose={() => setOpenProfile(false)}>
+        <Profile />
+      </Drawer>
     </ThemeProvider>
   );
 }

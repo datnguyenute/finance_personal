@@ -1,9 +1,9 @@
-import MarketingPage from "@/components/dashboard-page/MarketingPage";
+import Landing from "@/components/landing/landing";
 
 const HomePage = async () => {
   return (
     <>
-      <MarketingPage />
+      <Landing />
     </>
   );
 };

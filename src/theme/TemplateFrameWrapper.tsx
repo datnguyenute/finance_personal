@@ -6,6 +6,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import ToggleColorMode from "./ToggleColorMode";
 import {
+  alpha,
   Button,
   CssBaseline,
   Drawer,
@@ -36,9 +37,23 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderColor: theme.palette.divider,
   backgroundColor: theme.palette.background.paper,
   boxShadow: "none",
+  bgcolor: "transparent",
   backgroundImage: "none",
   zIndex: theme.zIndex.drawer + 1,
   flex: "0 0 auto",
+}));
+
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  display: "flex",
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "space-between",
+  flexShrink: 0,
+  backdropFilter: "blur(24px)",
+  borderColor: theme.palette.divider,
+  backgroundColor: alpha(theme.palette.background.default, 0.4),
+  boxShadow: theme.shadows[1],
+  padding: "8px 12px",
 }));
 
 const pages = [
@@ -64,8 +79,6 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [openProfile, setOpenProfile] = useState(false);
-
-  console.log(">> data: ", session);
 
   // Get color mode from Localstorage
   useEffect(() => {
@@ -105,8 +118,8 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
     setAnchorElUser(null);
   };
 
-  const redirectToHomepage = () => {
-    router.push("/");
+  const redirectTo = (route: string) => {
+    router.push(route);
   };
 
   const redirectToLoginPage = () => {
@@ -118,53 +131,50 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
       <CssBaseline />
       <Box sx={{ height: "100dvh", display: "flex", flexDirection: "column" }}>
         <StyledAppBar>
-          <Toolbar
-            variant="dense"
-            disableGutters
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              p: "8px 24px",
-            }}
-          >
-            <Stack
-              alignItems="center"
-              direction="row"
-              gap={2}
-              sx={{ display: { xs: "none", md: "flex" }, color: "text.primary", cursor: "pointer" }}
-              onClick={() => redirectToHomepage()}
-            >
-              <AssuredWorkloadIcon sx={{ color: "text.primary" }} />
-              <Typography
-                variant="h6"
-                sx={{
-                  mr: 2,
-                  fontWeight: 700,
-                  letterSpacing: ".1rem",
-                  color: "text.primary",
-                }}
+          <StyledToolbar variant="dense" disableGutters>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Stack
+                marginRight={2}
+                alignItems="center"
+                direction="row"
+                gap={1}
+                onClick={() => redirectTo("/")}
+                sx={(theme) => ({
+                  display: { xs: "none", md: "flex" },
+                  cursor: "pointer",
+                  color: "primary.main",
+                  ...theme.applyStyles("dark", {
+                    color: "primary.light",
+                  }),
+                })}
               >
-                FINANCE PERSONAL
-              </Typography>
-            </Stack>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-                "> a": { color: "text.secondary", display: "block", margin: "0 16px", textDecoration: "unset" },
-              }}
-            >
-              {pages.map((page) => (
-                <Link key={page.name} href={page.url}>
-                  {page.name}
-                </Link>
-              ))}
+                <AssuredWorkloadIcon />
+                <Typography component="span" variant="h5">
+                  Personal Finances
+                </Typography>
+              </Stack>
+              <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+                {pages.map((page) => (
+                  <Button onClick={() => redirectTo(page.url)} variant="text" color="info" size="small">
+                    {page.name}
+                  </Button>
+                ))}
+              </Box>
             </Box>
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Box
+              sx={(theme) => ({
+                flexGrow: 1,
+                display: { xs: "flex", md: "none" },
+                cursor: "pointer",
+                color: "primary.main",
+                ...theme.applyStyles("dark", {
+                  color: "primary.light",
+                }),
+              })}
+            >
               <IconButton
                 size="large"
-                aria-label="account of current user"
+                aria-label="display actions bar"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
@@ -198,23 +208,24 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
               </Menu>
             </Box>
             <Stack
+              marginRight={2}
               alignItems="center"
               direction="row"
-              gap={2}
-              sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1, color: "text.primary", cursor: "pointer" }}
-              onClick={() => redirectToHomepage()}
+              gap={1}
+              onClick={() => redirectTo("/")}
+              sx={(theme) => ({
+                flexGrow: 1,
+                display: { xs: "flex", md: "none" },
+                cursor: "pointer",
+                color: "primary.main",
+                ...theme.applyStyles("dark", {
+                  color: "primary.light",
+                }),
+              })}
             >
-              <AssuredWorkloadIcon sx={{ color: "text.primary" }} />
-              <Typography
-                variant="h6"
-                sx={{
-                  mr: 2,
-                  fontWeight: 700,
-                  letterSpacing: ".1rem",
-                  color: "text.primary",
-                }}
-              >
-                FINANCE PERSONAL
+              <AssuredWorkloadIcon />
+              <Typography component="span" variant="h5">
+                Personal Finances
               </Typography>
             </Stack>
 
@@ -223,53 +234,51 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 <ToggleColorMode data-screenshot="toggle-mode" mode={mode} toggleColorMode={toggleColorMode} />
               </Box>
               {session && !session.error ? (
-                <>
-                  <Box>
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <ProfileAvatar />
-                    </IconButton>
-                    <Menu
-                      sx={{ mt: "40px", width: "200px" }}
-                      id="menu-appbar"
-                      anchorEl={anchorElUser}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
+                <Box>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <ProfileAvatar />
+                  </IconButton>
+                  <Menu
+                    sx={{ mt: "40px", width: "200px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        setOpenProfile(!openProfile);
+                        handleCloseUserMenu();
                       }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      open={Boolean(anchorElUser)}
-                      onClose={handleCloseUserMenu}
                     >
-                      <MenuItem
-                        onClick={() => {
-                          setOpenProfile(!openProfile);
-                          handleCloseUserMenu();
-                        }}
-                      >
-                        <ListItemIcon>
-                          <AccountCircle fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText>Profile</ListItemText>
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => {
-                          signOut();
-                          redirectToLoginPage();
-                          handleCloseUserMenu();
-                        }}
-                      >
-                        <ListItemIcon>
-                          <ExitToApp fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText>Logout</ListItemText>
-                      </MenuItem>
-                    </Menu>
-                  </Box>
-                </>
+                      <ListItemIcon>
+                        <AccountCircle fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Profile</ListItemText>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        signOut();
+                        redirectToLoginPage();
+                        handleCloseUserMenu();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <ExitToApp fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Logout</ListItemText>
+                    </MenuItem>
+                  </Menu>
+                </Box>
               ) : (
                 <>
                   <Button variant="outlined" onClick={() => redirectToLoginPage()}>
@@ -278,7 +287,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 </>
               )}
             </Stack>
-          </Toolbar>
+          </StyledToolbar>
         </StyledAppBar>
         <Box sx={{ flex: "1 1", overflow: "auto" }}>{children}</Box>
       </Box>

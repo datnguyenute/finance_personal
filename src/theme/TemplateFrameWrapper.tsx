@@ -153,7 +153,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                   Personal Finances
                 </Typography>
               </Stack>
-              <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+              <Box sx={{ display: { xs: "none", md: session && !session.error ? "flex" : "none" }, gap: 1 }}>
                 {pages.map((page) => (
                   <Button onClick={() => redirectTo(page.url)} variant="text" color="info" size="small">
                     {page.name}
@@ -196,7 +196,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
+                sx={{ display: { xs: session && !session.error ? "block" : "none", md: "none" } }}
               >
                 {pages.map((page) => (
                   <MenuItem key={page.name} onClick={handleCloseNavMenu}>
@@ -266,9 +266,9 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                       <ListItemText>Profile</ListItemText>
                     </MenuItem>
                     <MenuItem
-                      onClick={() => {
-                        signOut();
-                        redirectToLoginPage();
+                      onClick={async () => {
+                        await signOut();
+                        redirectTo("/auth/login");
                         handleCloseUserMenu();
                       }}
                     >
@@ -281,7 +281,10 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 </Box>
               ) : (
                 <>
-                  <Button variant="outlined" onClick={() => redirectToLoginPage()}>
+                  <Button variant="contained" color="primary" onClick={() => redirectTo("/auth/login")}>
+                    Register
+                  </Button>
+                  <Button variant="outlined" onClick={() => redirectTo("/auth/login")}>
                     Login
                   </Button>
                 </>

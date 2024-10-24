@@ -32,7 +32,7 @@ async function refreshAccessToken(token: JWT) {
 }
 
 export const options: AuthOptions = {
-  secret: process.env.NO_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({

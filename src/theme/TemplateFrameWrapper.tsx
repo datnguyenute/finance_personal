@@ -58,12 +58,12 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 const pages = [
   {
-    url: "/report",
-    name: "Report",
-  },
-  {
     url: "/transactions",
     name: "Transactions",
+  },
+  {
+    url: "/report",
+    name: "Report",
   },
 ];
 
@@ -120,10 +120,6 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
 
   const redirectTo = (route: string) => {
     router.push(route);
-  };
-
-  const redirectToLoginPage = () => {
-    router.push("/auth/login");
   };
 
   return (
@@ -281,11 +277,11 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 </Box>
               ) : (
                 <>
-                  <Button variant="contained" color="primary" onClick={() => redirectTo("/auth/login")}>
-                    Register
+                  <Button variant="contained" color="primary" onClick={() => redirectTo("/auth/register")}>
+                    Sign up
                   </Button>
                   <Button variant="outlined" onClick={() => redirectTo("/auth/login")}>
-                    Login
+                    Sign in
                   </Button>
                 </>
               )}

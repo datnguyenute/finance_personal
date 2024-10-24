@@ -13,7 +13,7 @@ import { AppRegistration, Equalizer, ReceiptLong } from "@mui/icons-material";
 const items = [
   {
     icon: <AppRegistration />,
-    title: "Easy with register",
+    title: "Easy to sign up",
     description:
       "Effortlessly Create Your Account: A Quick and Simple Registration Process for Immediate Access to Your Personal Finance Tools",
     imageLight: 'url("/static/images/home/register-light.png")',

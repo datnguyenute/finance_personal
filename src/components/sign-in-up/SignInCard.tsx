@@ -2,11 +2,9 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MuiCard from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -14,11 +12,11 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
 import ForgotPassword from "./ForgotPassword";
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
-import { GitHub } from "@mui/icons-material";
+import { GoogleIcon } from "./CustomIcons";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Snackbar, Stack } from "@mui/material";
+import { AssuredWorkload } from "@mui/icons-material";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -110,12 +108,28 @@ export default function SignInCard() {
 
   const redirectTo = (link: string) => {
     router.push(link);
-  }
+  };
 
   return (
     <Card variant="outlined">
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
-        <SitemarkIcon />
+        <Stack
+          width={"100%"}
+          marginRight={2}
+          textAlign="left"
+          gap={1}
+          sx={(theme) => ({
+            color: "primary.main",
+            ...theme.applyStyles("dark", {
+              color: "primary.light",
+            }),
+          })}
+        >
+          <Typography component="span" variant="h6">
+            <AssuredWorkload fontSize="small" />
+            &nbsp;Personal Finances
+          </Typography>
+        </Stack>
       </Box>
       <Typography component="h1" variant="h4" sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
         Sign in
@@ -147,15 +161,6 @@ export default function SignInCard() {
         <FormControl>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <FormLabel htmlFor="password">Password</FormLabel>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: "baseline" }}
-            >
-              Forgot your password?
-            </Link>
           </Box>
           <TextField
             error={passwordError}
@@ -172,7 +177,6 @@ export default function SignInCard() {
             color={passwordError ? "error" : "primary"}
           />
         </FormControl>
-        <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
         <ForgotPassword open={open} handleClose={handleClose} />
         <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
           Sign in
@@ -180,7 +184,11 @@ export default function SignInCard() {
         <Typography sx={{ textAlign: "center" }}>
           Don&apos;t have an account?{" "}
           <span>
-            <Link variant="body2" sx={{ alignSelf: "center", cursor: 'pointer' }} onClick={() => redirectTo('/auth/register')}>
+            <Link
+              variant="body2"
+              sx={{ alignSelf: "center", cursor: "pointer" }}
+              onClick={() => redirectTo("/auth/register")}
+            >
               Sign up
             </Link>
           </span>
@@ -191,14 +199,8 @@ export default function SignInCard() {
         <Button fullWidth variant="outlined" onClick={() => alert("Sign in with Google")} startIcon={<GoogleIcon />}>
           Sign in with Google
         </Button>
-        <Button fullWidth variant="outlined" onClick={() => signIn("github")} startIcon={<GitHub />}>
-          Sign in with Github
-        </Button>
       </Box>
-      <Snackbar
-        open={openMessage}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
+      <Snackbar open={openMessage} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
         <Alert onClose={() => setOpenMessage(false)} severity="error" sx={{ width: "100%" }}>
           {resMessage}
         </Alert>

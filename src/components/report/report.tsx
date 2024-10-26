@@ -11,13 +11,13 @@ export const IDateType = {
   MONTH: 0,
   THREE_MONTH: 1,
   YEAR: 2,
-  CUSTOM: 3
-}
+  CUSTOM: 3,
+};
 
 const Report = () => {
   const { data: session } = useSession();
   const [report, setReport] = useState<ITransactionReport>();
-  const [dateFrom, setDateFrom] = useState<Date>(dayjs().subtract(30, 'day').toDate());
+  const [dateFrom, setDateFrom] = useState<Date>(dayjs().subtract(30, "day").toDate());
   const [dateTo, setDateTo] = useState<Date>(new Date());
   const [dateType, setDateType] = useState<number>(IDateType.MONTH);
 
@@ -37,22 +37,11 @@ const Report = () => {
         queryParams: {
           from: dateFrom,
           to: dateTo,
-          type
+          type,
         },
       });
       setReport(data.data || undefined);
     }
-  };
-
-  const formalDate = (date: Date): string => {
-    return date.toISOString().split("T")[0];
-  };
-
-  const setDateFromFormal = (value: string) => {
-    setDateFrom(new Date(value));
-  };
-  const setDateToFormal = (value: string) => {
-    setDateTo(new Date(value));
   };
 
   const setDataTypeCustom = (type: number) => {
@@ -60,22 +49,22 @@ const Report = () => {
     let endDate: Date = new Date();
     switch (type) {
       case 0: // One month ago (30 days ago)
-        startDate = dayjs().subtract(30, 'day').toDate();
+        startDate = dayjs().subtract(30, "day").toDate();
         break;
       case 1: // Six months ago (~ 182 days ago)
-        startDate = dayjs().subtract(6, 'month').toDate();
+        startDate = dayjs().subtract(6, "month").toDate();
         break;
       case 2: // One year ago (365 days ago)
-        startDate = dayjs().subtract(1, 'year').add(1, 'day').toDate();
+        startDate = dayjs().subtract(1, "year").add(1, "day").toDate();
         break;
       default: // Custom date range
-        startDate = dayjs().subtract(30, 'day').toDate()
+        startDate = dayjs().subtract(30, "day").toDate();
         break;
     }
     setDateFrom(startDate);
     setDateTo(endDate);
     setDateType(type);
-  }
+  };
 
   return (
     <Box

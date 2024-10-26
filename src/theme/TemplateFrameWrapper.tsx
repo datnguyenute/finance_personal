@@ -192,15 +192,30 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
-                sx={{ display: { xs: session && !session.error ? "block" : "none", md: "none" } }}
+                sx={{ display: { xs: "block", md: "none" } }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Link href={page.url} style={{ color: "unset", textDecoration: "unset" }}>
-                      {page.name}
-                    </Link>
-                  </MenuItem>
-                ))}
+                {session && !session.error ? (
+                  pages.map((page) => (
+                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                      <Link href={page.url} style={{ color: "unset", textDecoration: "unset" }}>
+                        {page.name}
+                      </Link>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <>
+                    <MenuItem onClick={handleCloseNavMenu}>
+                      <Link href="/auth/register" style={{ color: "unset", textDecoration: "unset" }}>
+                        Sign up
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={handleCloseNavMenu}>
+                      <Link href="/auth/login" style={{ color: "unset", textDecoration: "unset" }}>
+                        Sign in
+                      </Link>
+                    </MenuItem>
+                  </>
+                )}
               </Menu>
             </Box>
             <Stack
@@ -276,14 +291,14 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                   </Menu>
                 </Box>
               ) : (
-                <>
+                <Stack sx={{ display: { xs: "none", md: "block" } }} direction="row" spacing={2}>
                   <Button variant="contained" color="primary" onClick={() => redirectTo("/auth/register")}>
                     Sign up
                   </Button>
                   <Button variant="outlined" onClick={() => redirectTo("/auth/login")}>
                     Sign in
                   </Button>
-                </>
+                </Stack>
               )}
             </Stack>
           </StyledToolbar>

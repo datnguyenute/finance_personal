@@ -145,10 +145,10 @@ const TransactionsHeader = (props: ITransactionsHeaderProps) => {
   return (
     <>
       <Grid container spacing={4}>
-        <Grid size={4}>
+        <Grid size={{ xs: 12, sm: 8, lg: 4 }}>
           <TransactionsAssetsCard data={accounts} />
         </Grid>
-        <Grid size={8}>
+        <Grid size={{ xs: 12, sm: 8, lg: 8 }}>
           <Card elevation={4} sx={{ mb: 2, mt: 2 }}>
             <CardHeader
               title={"Assets list"}

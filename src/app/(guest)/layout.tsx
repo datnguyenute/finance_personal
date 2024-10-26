@@ -1,3 +1,4 @@
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import RootLayout from "../layout";
 
 export const metadata = {
@@ -6,5 +7,11 @@ export const metadata = {
 };
 
 export default function GuestLayout({ children }: { children: React.ReactNode }) {
-  return <RootLayout>{children}</RootLayout>;
+  return (
+    <RootLayout>
+      <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+        <>{children}</>
+      </AppRouterCacheProvider>
+    </RootLayout>
+  );
 }

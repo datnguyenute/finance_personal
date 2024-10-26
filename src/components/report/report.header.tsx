@@ -43,8 +43,8 @@ const ReportHeader = (props: IReportHeaderProps) => {
           Here what's happening in your finance.
         </Typography>
       </Grid>
-      <Stack alignItems="center" direction="row" gap={2}>
-        <FormControl sx={{ minWidth: 150 }}>
+      <Stack alignItems="center" direction={{ xs: "column", sm: "row" }} gap={2}>
+        <FormControl sx={{ minWidth: 150, width: { xs: "100%", sm: "auto" } }}>
           <InputLabel id="report-header-autowidth-label">Type filter</InputLabel>
           <Select
             labelId="report-header-autowidth-label"
@@ -61,6 +61,7 @@ const ReportHeader = (props: IReportHeaderProps) => {
           </Select>
         </FormControl>
         <DatePicker
+          sx={{ width: { xs: "100%", sm: "auto" } }}
           readOnly={dataType !== 3}
           label="Date from"
           defaultValue={dayjs(from)}
@@ -68,6 +69,7 @@ const ReportHeader = (props: IReportHeaderProps) => {
           onChange={handleChangeDateFrom}
         />
         <DatePicker
+          sx={{ width: { xs: "100%", sm: "auto" } }}
           readOnly={dataType !== 3}
           label="Date to"
           defaultValue={dayjs(to)}

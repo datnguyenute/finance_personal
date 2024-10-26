@@ -3,10 +3,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
@@ -16,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { createTheme, ThemeProvider, styled, PaletteMode } from "@mui/material/styles";
 import TemplateFrame from "./TemplateFrame";
-import { FacebookIcon, GoogleIcon, SitemarkIcon } from "./CustomIcons";
+import { GoogleIcon } from "./CustomIcons";
 import getSignInSideTheme from "./theme/getSignInSideTheme";
 import { useRouter } from "next/navigation";
 import { Alert, Snackbar } from "@mui/material";
@@ -167,12 +165,7 @@ export default function SignUp() {
   };
 
   return (
-    <TemplateFrame
-      toggleCustomTheme={toggleCustomTheme}
-      showCustomTheme={showCustomTheme}
-      mode={mode}
-      toggleColorMode={toggleColorMode}
-    >
+    <TemplateFrame mode={mode} toggleColorMode={toggleColorMode}>
       <ThemeProvider theme={false ? SignUpTheme : defaultTheme}>
         <CssBaseline enableColorScheme />
         <SignUpContainer direction="column" justifyContent="space-between">

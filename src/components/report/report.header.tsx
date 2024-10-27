@@ -10,9 +10,12 @@ interface IReportHeaderProps {
   setFrom: (date: Date) => void;
   setTo: (date: Date) => void;
   setDataType: (value: number) => void;
+  accounts: IAccount[];
+  asset: string;
+  setAsset: (value: string) => void;
 }
 const ReportHeader = (props: IReportHeaderProps) => {
-  const { dataType, setDataType, from, to, setFrom, setTo } = props;
+  const { dataType, setDataType, from, to, setFrom, setTo, accounts, asset, setAsset } = props;
 
   const handleChangeDateFrom = (value: dayjs.Dayjs | null) => {
     if (value) {
@@ -32,6 +35,9 @@ const ReportHeader = (props: IReportHeaderProps) => {
   const handleChangeType = (event: SelectChangeEvent<number>) => {
     setDataType(Number(event.target.value));
   };
+  const handleChangeAsset = (event: SelectChangeEvent<string>) => {
+    setAsset(event.target.value);
+  };
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -44,7 +50,25 @@ const ReportHeader = (props: IReportHeaderProps) => {
         </Typography>
       </Grid>
       <Stack alignItems="center" direction={{ xs: "column", sm: "row" }} gap={2}>
-        <FormControl sx={{ minWidth: 150, width: { xs: "100%", sm: "auto" } }}>
+        <FormControl sx={{ minWidth: 100, width: { xs: "100%", sm: "auto" } }} size="small">
+          <InputLabel id="report-header-asset-label">Assets</InputLabel>
+          <Select
+            labelId="report-header-asset-label"
+            id="report-header-asset"
+            value={asset}
+            onChange={handleChangeAsset}
+            autoWidth
+            label="Assets"
+          >
+            <MenuItem value={""}>All</MenuItem>
+            {accounts.map((item) => (
+              <MenuItem key={item._id} value={item._id}>
+                {item.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ minWidth: 150, width: { xs: "100%", sm: "auto" } }} size="small">
           <InputLabel id="report-header-autowidth-label">Type filter</InputLabel>
           <Select
             labelId="report-header-autowidth-label"
@@ -61,7 +85,8 @@ const ReportHeader = (props: IReportHeaderProps) => {
           </Select>
         </FormControl>
         <DatePicker
-          sx={{ width: { xs: "100%", sm: "auto" } }}
+          slotProps={{ textField: { size: "small" } }}
+          sx={{ width: { xs: "100%", sm: "150px" } }}
           readOnly={dataType !== 3}
           label="Date from"
           defaultValue={dayjs(from)}
@@ -69,7 +94,8 @@ const ReportHeader = (props: IReportHeaderProps) => {
           onChange={handleChangeDateFrom}
         />
         <DatePicker
-          sx={{ width: { xs: "100%", sm: "auto" } }}
+          slotProps={{ textField: { size: "small" } }}
+          sx={{ width: { xs: "100%", sm: "150px" } }}
           readOnly={dataType !== 3}
           label="Date to"
           defaultValue={dayjs(to)}

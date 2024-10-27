@@ -150,8 +150,8 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 </Typography>
               </Stack>
               <Box sx={{ display: { xs: "none", md: session && !session.error ? "flex" : "none" }, gap: 1 }}>
-                {pages.map((page) => (
-                  <Button onClick={() => redirectTo(page.url)} variant="text" color="info" size="small">
+                {pages.map((page, index) => (
+                  <Button key={index} onClick={() => redirectTo(page.url)} variant="text" color="info" size="small">
                     {page.name}
                   </Button>
                 ))}

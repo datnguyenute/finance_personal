@@ -48,6 +48,7 @@ declare global {
   interface IAmountValue {
     totalAmount: number;
     totalTransaction: number;
+    [key: string]: number;
   }
 
   // Total amount (income and expense) between from and to

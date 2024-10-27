@@ -14,19 +14,25 @@ export const IDateType = {
   CUSTOM: 3,
 };
 
-const Report = () => {
+interface IReportProps {
+  accounts: IAccount[];
+}
+
+const Report = (props: IReportProps) => {
+  const { accounts } = props;
   const { data: session } = useSession();
   const [report, setReport] = useState<ITransactionReport>();
   const [dateFrom, setDateFrom] = useState<Date>(dayjs().subtract(30, "day").toDate());
   const [dateTo, setDateTo] = useState<Date>(new Date());
   const [dateType, setDateType] = useState<number>(IDateType.MONTH);
+  const [asset, setAsset] = useState<string>("");
 
   useEffect(() => {
-    fetchData(dateFrom, dateTo, dateType);
-  }, [session, dateFrom, dateTo, dateType]);
+    fetchData(dateFrom, dateTo, dateType, asset);
+  }, [session, dateFrom, dateTo, dateType, asset]);
 
   // Get transactions
-  const fetchData = async (dateFrom: Date, dateTo: Date, type: number) => {
+  const fetchData = async (dateFrom: Date, dateTo: Date, type: number, asset: string) => {
     if (session?.access_token) {
       const data = await sendRequest<IBackendRes<ITransactionReport>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions/for-report`,
@@ -38,6 +44,7 @@ const Report = () => {
           from: dateFrom,
           to: dateTo,
           type,
+          asset,
         },
       });
       setReport(data.data || undefined);
@@ -91,6 +98,9 @@ const Report = () => {
           to={dateTo}
           setFrom={setDateFrom}
           setTo={setDateTo}
+          accounts={accounts}
+          asset={asset}
+          setAsset={setAsset}
         />
       </Container>
     </Box>

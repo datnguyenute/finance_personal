@@ -203,7 +203,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                     </MenuItem>
                   ))
                 ) : (
-                  <>
+                  <Box>
                     <MenuItem onClick={handleCloseNavMenu}>
                       <Link href="/auth/register" style={{ color: "unset", textDecoration: "unset" }}>
                         Sign up
@@ -214,7 +214,7 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                         Sign in
                       </Link>
                     </MenuItem>
-                  </>
+                  </Box>
                 )}
               </Menu>
             </Box>
@@ -292,12 +292,14 @@ export default function TemplateFrameWrapper(props: TemplateFrameWrapperProps) {
                 </Box>
               ) : (
                 <Stack sx={{ display: { xs: "none", md: "block" } }} direction="row" spacing={2}>
-                  <Button variant="contained" color="primary" onClick={() => redirectTo("/auth/register")}>
-                    Sign up
-                  </Button>
-                  <Button variant="outlined" onClick={() => redirectTo("/auth/login")}>
-                    Sign in
-                  </Button>
+                  <Link href="/auth/register">
+                    <Button variant="contained" color="primary">
+                      Sign up
+                    </Button>
+                  </Link>
+                  <Link href="/auth/login">
+                    <Button variant="outlined">Sign in</Button>
+                  </Link>
                 </Stack>
               )}
             </Stack>

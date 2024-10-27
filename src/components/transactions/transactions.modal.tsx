@@ -53,7 +53,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
       const current = dayjs();
       setCurrentDate(current);
       // Set to form
-      const currentDate = current.format('YYYY-MM-DD HH:mm:ss')
+      const currentDate = current.format("YYYY-MM-DD HH:mm:ss");
       setValue("date", currentDate);
     }
   }, [open]);
@@ -92,7 +92,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
   };
 
   const handleChangeDate = (value: any) => {
-    const newDate = value.format('YYYY-MM-DD HH:mm:ss');
+    const newDate = value.format("YYYY-MM-DD HH:mm:ss");
     setValue("date", newDate);
   };
 
@@ -117,10 +117,15 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
                   labelId="transaction-modal-account"
                   id="transaction-modal-account-select"
                   label="Account"
+                  value={accounts && accounts.length > 0 && accounts[0]._id}
                   {...register("accountId")}
                 >
                   {accounts.length > 0 ? (
-                    accounts.map((item) => <MenuItem value={item._id}>{item.name}</MenuItem>)
+                    accounts.map((item) => (
+                      <MenuItem key={item._id} value={item._id}>
+                        {item.name}
+                      </MenuItem>
+                    ))
                   ) : (
                     <></>
                   )}
@@ -133,6 +138,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
                   labelId="transaction-modal-type"
                   id="transaction-modal-type-select"
                   label="Type"
+                  value="Income"
                   {...register("type")}
                 >
                   <MenuItem value={"Income"}>Income</MenuItem>
@@ -146,6 +152,7 @@ const TransactionsModal = (props: ITransactionsModalProps) => {
                   labelId="transaction-modal-category"
                   id="transaction-modal-category-select"
                   label="Category"
+                  value={"Online Subscription"}
                   {...register("category")}
                 >
                   <MenuItem value={"Online Subscription"}>Online Subscription</MenuItem>

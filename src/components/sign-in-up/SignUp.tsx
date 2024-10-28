@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { Alert, Snackbar } from "@mui/material";
 import { sendRequest } from "@/utils/api";
 import { AssuredWorkload } from "@mui/icons-material";
+import { signIn } from "next-auth/react";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -256,12 +257,7 @@ export default function SignUp() {
               <Typography sx={{ color: "text.secondary" }}>or</Typography>
             </Divider>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={() => alert("Sign up with Google")}
-                startIcon={<GoogleIcon />}
-              >
+              <Button fullWidth variant="outlined" onClick={() => signIn("google")} startIcon={<GoogleIcon />}>
                 Sign up with Google
               </Button>
             </Box>

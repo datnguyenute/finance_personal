@@ -196,7 +196,7 @@ export default function SignInCard() {
       </Box>
       <Divider>or</Divider>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <Button fullWidth variant="outlined" onClick={() => alert("Sign in with Google")} startIcon={<GoogleIcon />}>
+        <Button fullWidth variant="outlined" onClick={() => signIn("google")} startIcon={<GoogleIcon />}>
           Sign in with Google
         </Button>
       </Box>
